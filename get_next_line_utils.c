@@ -1,126 +1,116 @@
-#include "get_next_line.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: opopov <opopov@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/03 12:57:20 by opopov            #+#    #+#             */
+/*   Updated: 2025/01/04 18:53:47 by opopov           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-l_list *find_last(l_list *list)
+#include "get_next_line.h"
+#include <stdlib.h>
+
+t_list	*find_last(t_list *list)
 {
-    if (list == NULL)
-        return (NULL);
-    while (list->next != NULL)
-        list = list->next;
-    return (list);
+	if (list == NULL)
+		return (NULL);
+	while (list->next)
+		list = list->next;
+	return (list);
 }
 
 // create_list function
-int search_for_newline(l_list *list)
+int	search_for_newline(t_list *list)
 {
-    int i;
+	int	i;
 
-    if (list == NULL)
-        return (0);
-    while (list)
-    {
-        i = 0;
-        while (list->current[i] && i < BUFF_SIZE )
-        {
-            if (list->current[i] == '\n')
-                return (1);
-            i++;
-        }
-        list = list->next;
-    }
-    return (0);
+	if (list == NULL)
+		return (0);
+	while (list)
+	{
+		i = 0;
+		while (list->current[i] && i < BUFF_SIZE)
+		{
+			if (list->current[i] == '\n')
+				return (1);
+			i++;
+		}
+		list = list->next;
+	}
+	return (0);
 }
 
-void add_buf(l_list **list, char *buf)
+// get_line function
+int	len_newline(t_list *list)
 {
-    l_list *new; 
-    l_list *last; 
+	int	i;
+	int	len;
 
-    last = find_last(*list);
-    new = (l_list *)malloc(sizeof(l_list));
-    if (new == NULL)
-        return ;
-    if (last == NULL)
-        *list = new;
-    else 
-        last->next = new;
-    new->current = buf;
-    new->next = NULL;
+	len = 0;
+	if (list == NULL)
+		return (len);
+	while (list)
+	{
+		i = 0;
+		while (list->current[i])
+		{
+			len++;
+			if (list->current[i] == '\n')
+				return (len);
+			i++;
+		}
+		list = list->next;
+	}
+	return (len);
 }
 
-
-// get_line function 
-int len_newline(l_list *list)
+void	strcopy(t_list *list, char *str)
 {
-    int i;
-    int len;
+	int	i;
+	int	k;
 
-    len = 0;
-    if (list == NULL)
-        return (len);
-   while (list)
-   {
-        i = 0;
-        while (list->current[i])
-        {
-            if (list->current[i] == '\n')
-            {
-                len++;
-                return (len);
-            }
-            i++;
-            len++;
-        }
-        list = list->next;
-   }
-   return (len);
+	if (list == NULL)
+		return ;
+	k = 0;
+	while (list)
+	{
+		i = 0;
+		while (list->current[i] && list->current[i] != '\n')
+			str[k++] = list->current[i++];
+		if (list->current[i] == '\n')
+		{
+			str[k++] = '\n';
+			str[k] = '\0';
+			return ;
+		}
+		list = list->next;
+	}
+	str[k] = '\0';
 }
 
-void strcopy(l_list *list, char *str)
+//free_list function
+void	free_all(t_list **list, t_list *clean, char *buf)
 {
-    int i;
-    int k;
+	t_list	*tmp;
 
-    if (list == NULL)
-        return ;
-    k = 0;
-    while (list)
-    {
-        i = 0;
-        while (list->current[i])
-        {
-            if (list->current[i] == '\n')
-            {
-                str[k++] = '\n';
-                str[k] = '\0';
-                return ;
-            }
-            str[k++] = list->current[i++];
-        }
-        list = list->next;
-    }
-    str[k] = '\0';
-}
-
-//free_list function 
-void free_all(l_list **list, l_list *clean, char *buf)
-{
-    l_list *tmp;
-
-    if (*list == NULL)
-        return ;
-    while (*list)
-    {
-        tmp = (*list)->next;
-        free((*list)->current);
-        free(*list);
-        *list = tmp;
-    }
-    *list = NULL;
-    if (clean->current[0])
-        *list = clean;
-    else
-    {
-        free(buf);
-        free(clean);
-    }
+	if (*list == NULL)
+		return ;
+	while (*list)
+	{
+		tmp = (*list)->next;
+		free((*list)->current);
+		free(*list);
+		*list = tmp;
+	}
+	*list = NULL;
+	if (clean->current[0])
+		*list = clean;
+	else
+	{
+		free(buf);
+		free(clean);
+	}
 }
