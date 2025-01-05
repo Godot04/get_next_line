@@ -6,15 +6,15 @@
 /*   By: opopov <opopov@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 13:10:00 by opopov            #+#    #+#             */
-/*   Updated: 2025/01/04 17:49:31 by opopov           ###   ########.fr       */
+/*   Updated: 2025/01/05 16:36:40 by opopov           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# ifndef BUFF_SIZE
-#  define BUFF_SIZE 10
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10
 # endif
 
 # include <stdlib.h>
@@ -29,6 +29,7 @@ typedef struct s_list
 
 char	*get_next_line(int fd);
 t_list	*find_last(t_list *list);
+char	*get_1line(t_list *list);
 int		search_for_newline(t_list *list);
 void	add_buf(t_list **list, char *buf);
 int		len_newline(t_list *list);

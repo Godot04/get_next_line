@@ -6,7 +6,7 @@
 /*   By: opopov <opopov@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 12:57:20 by opopov            #+#    #+#             */
-/*   Updated: 2025/01/04 18:53:47 by opopov           ###   ########.fr       */
+/*   Updated: 2025/01/05 16:37:32 by opopov           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	search_for_newline(t_list *list)
 	while (list)
 	{
 		i = 0;
-		while (list->current[i] && i < BUFF_SIZE)
+		while (list->current[i] && i < BUFFER_SIZE)
 		{
 			if (list->current[i] == '\n')
 				return (1);
@@ -51,7 +51,7 @@ int	len_newline(t_list *list)
 
 	len = 0;
 	if (list == NULL)
-		return (len);
+		return (0);
 	while (list)
 	{
 		i = 0;

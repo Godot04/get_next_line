@@ -6,7 +6,7 @@
 /*   By: opopov <opopov@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 12:56:57 by opopov            #+#    #+#             */
-/*   Updated: 2025/01/04 18:54:57 by opopov           ###   ########.fr       */
+/*   Updated: 2025/01/05 16:36:29 by opopov           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	free_list(t_list **list)
 	int		k;
 	char	*buf;
 
-	buf = (char *)malloc(BUFF_SIZE + 1);
+	buf = (char *)malloc(BUFFER_SIZE + 1);
 	clean = (t_list *)malloc(sizeof(t_list));
 	if (buf == NULL || clean == NULL)
 		return ;
@@ -48,7 +48,7 @@ void	free_list(t_list **list)
 	k = 0;
 	while (last->current[i] && last->current[i] != '\n')
 		i++;
-	while (last->current[i] && last->current[++i])
+	while (last->current[i++])
 		buf[k++] = last->current[i];
 	buf[k] = '\0';
 	clean->current = buf;
@@ -56,7 +56,7 @@ void	free_list(t_list **list)
 	free_all(list, clean, buf);
 }
 
-char	*get_line(t_list *list)
+char	*get_1line(t_list *list)
 {
 	int		len;
 	char	*next;
@@ -78,10 +78,10 @@ void	create_list(t_list **list, int fd)
 
 	while (search_for_newline(*list) != 1)
 	{
-		buf = (char *)malloc(BUFF_SIZE + 1);
+		buf = (char *)malloc(BUFFER_SIZE + 1);
 		if (buf == NULL)
 			return ;
-		readable = read(fd, buf, BUFF_SIZE);
+		readable = read(fd, buf, BUFFER_SIZE);
 		if (readable == 0)
 		{
 			free(buf);
@@ -97,22 +97,12 @@ char	*get_next_line(int fd)
 	static t_list	*list = NULL;
 	char			*next;
 
-	if (fd < 0 || BUFF_SIZE <= 0 || read(fd, &next, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
 	create_list(&list, fd);
 	if (list == NULL)
 		return (NULL);
-	next = get_line(list);
+	next = get_1line(list);
 	free_list(&list);
 	return (next);
 }
-
-// #include <stdio.h>
-// int	main(void)
-// {
-// 	int fd = open("test.txt", O_RDONLY);
-// 	char *a;
-// 	while ((a = get_next_line(fd)))
-// 		printf("%s", a);
-// 	return (0);
-// }
