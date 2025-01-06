@@ -5,14 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: opopov <opopov@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/03 12:56:57 by opopov            #+#    #+#             */
-/*   Updated: 2025/01/05 16:36:29 by opopov           ###   ########.fr       */
+/*   Created: 2025/01/05 19:41:21 by opopov            #+#    #+#             */
+/*   Updated: 2025/01/06 21:40:02 by opopov           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdlib.h>
-#include <stdio.h>
 
 void	add_buf(t_list **list, char *buf)
 {
@@ -33,23 +31,27 @@ void	add_buf(t_list **list, char *buf)
 
 void	free_list(t_list **list)
 {
-	t_list	*last;
 	t_list	*clean;
+	char	*buf;
 	int		i;
 	int		k;
-	char	*buf;
+	t_list	*last;
 
+	if (*list == NULL)
+		return ;
 	buf = (char *)malloc(BUFFER_SIZE + 1);
 	clean = (t_list *)malloc(sizeof(t_list));
 	if (buf == NULL || clean == NULL)
-		return ;
+		return (free(buf), free(clean));
 	last = find_last(*list);
 	i = 0;
 	k = 0;
 	while (last->current[i] && last->current[i] != '\n')
 		i++;
-	while (last->current[i++])
-		buf[k++] = last->current[i];
+	if (last->current[i] == '\n')
+		i++;
+	while (last->current[i])
+		buf[k++] = last->current[i++];
 	buf[k] = '\0';
 	clean->current = buf;
 	clean->next = NULL;
@@ -82,6 +84,12 @@ void	create_list(t_list **list, int fd)
 		if (buf == NULL)
 			return ;
 		readable = read(fd, buf, BUFFER_SIZE);
+		if (readable < 0)
+		{
+			free(buf);
+			free_all(list, NULL, NULL);
+			return ;
+		}
 		if (readable == 0)
 		{
 			free(buf);
@@ -98,7 +106,10 @@ char	*get_next_line(int fd)
 	char			*next;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	{
+		free_all(&list, NULL, NULL);
 		return (NULL);
+	}
 	create_list(&list, fd);
 	if (list == NULL)
 		return (NULL);
