@@ -174,16 +174,6 @@ Header file containing:
 - The caller is responsible for freeing the returned line
 - Returns NULL when reaching EOF or encountering an error
 
-## 🔍 How It Works
-
-1. **First Call**: The static list is NULL, so the function starts reading from the file descriptor
-2. **Buffer Reading**: Data is read in chunks of BUFFER_SIZE and stored in linked list nodes
-3. **Newline Search**: The function searches for a `\n` character in the accumulated data
-4. **Line Extraction**: Once found (or EOF reached), the line is extracted and returned
-5. **State Preservation**: Remaining data after the newline is kept in the static list
-6. **Subsequent Calls**: The next call continues from where it left off, using the preserved data
-7. **Cleanup**: When EOF is reached or an error occurs, all memory is freed and NULL is returned
-
 ## 👤 Author
 
-**opopov** - 42 School Student
+**opopov**
