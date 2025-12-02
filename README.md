@@ -118,57 +118,6 @@ int main(void)
 }
 ```
 
-### Reading from Standard Input
-
-```c
-#include "get_next_line.h"
-#include <stdio.h>
-
-int main(void)
-{
-    char *line;
-
-    printf("Enter text (Ctrl+D to end):\n");
-    while ((line = get_next_line(0)) != NULL)
-    {
-        printf("You entered: %s", line);
-        free(line);
-    }
-    return (0);
-}
-```
-
-### Reading from Multiple File Descriptors
-
-```c
-#include "get_next_line.h"
-#include <fcntl.h>
-#include <stdio.h>
-
-int main(void)
-{
-    int     fd1, fd2;
-    char    *line1, *line2;
-
-    fd1 = open("file1.txt", O_RDONLY);
-    fd2 = open("file2.txt", O_RDONLY);
-
-    // Read alternately from two files
-    line1 = get_next_line(fd1);
-    line2 = get_next_line(fd2);
-
-    printf("File 1: %s", line1);
-    printf("File 2: %s", line2);
-
-    free(line1);
-    free(line2);
-
-    close(fd1);
-    close(fd2);
-    return (0);
-}
-```
-
 ## 📊 Implementation Structure
 
 The project consists of three main files:
