@@ -160,7 +160,7 @@ Header file containing:
 - **Data Structure**: Singly-linked list
 - **Static Variables**: Used to maintain state between function calls
 - **System Calls**: read()
-- **Buffer Size**: Configurable via BUFFER_SIZE macro
+- **Buffer Size**: Configurable via BUFFER_SIZE 
 
 ## 🎮 Testing
 
