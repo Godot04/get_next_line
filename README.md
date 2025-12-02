@@ -8,7 +8,7 @@
 
 **get_next_line** is a project that challenges you to write a function that reads a line from a file descriptor. This function allows you to read from files or standard input one line at a time, regardless of the line length. The function handles multiple file descriptors simultaneously and efficiently manages memory using static variables and linked lists.
 
-Through this project, I developed skills in file I/O operations, static variables, memory management, and working with linked list data structures in C.
+Through this project, I developed skills and knowledge in file I/O operations, got to know how to use static variables, how to handle memory management, and how to work with linked list data structures in C.
 
 ## 🎯 Project Goals
 
@@ -16,7 +16,6 @@ Through this project, I developed skills in file I/O operations, static variable
 - Handle multiple file descriptors without losing the reading thread on each
 - Efficiently manage memory using static variables and dynamic allocation
 - Work with variable buffer sizes to optimize performance
-- Understand file descriptors and system calls (read)
 
 ## 📚 Function Prototype
 
